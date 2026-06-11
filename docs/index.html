@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traffic Demand Prediction | AI Portfolio</title>
+    <meta name="description" content="An AI-powered machine learning pipeline for urban traffic demand prediction.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    
+    <header class="hero section-reveal">
+        <div class="container">
+            <h1 class="gradient-text">Urban Traffic Demand Prediction</h1>
+            <p class="subtitle">A robust machine learning pipeline designed to forecast city mobility patterns and alleviate congestion.</p>
+            <div class="hero-actions">
+                <a href="https://github.com/hiya7790/Traffic-Demand-Prediction" class="btn primary-btn" target="_blank">View on GitHub</a>
+                <a href="#results" class="btn secondary-btn">See the Results</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section id="problem" class="container section-reveal">
+            <div class="glass-card">
+                <h2>The Challenge</h2>
+                <p>Cities worldwide are increasingly turning to AI-powered solutions to tackle the issue of traffic congestion. This problem disrupts the smooth flow of transportation and poses a significant barrier to economic growth.</p>
+                <p><strong>The Task:</strong> Design a system to predict passenger travel demand across various geographic locations at 15-minute intervals using historical spatial-temporal datasets.</p>
+            </div>
+        </section>
+
+        <section id="methodology" class="container section-reveal">
+            <div class="glass-card">
+                <h2>Technical Approach</h2>
+                <div class="grid-2">
+                    <div class="feature">
+                        <div class="feature-icon">📍</div>
+                        <h3>Spatial Decoding</h3>
+                        <p>Decoded Base32 Geohashes into numerical Latitude and Longitude coordinates to map accurate spatial proximity.</p>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">⏱️</div>
+                        <h3>Temporal Features</h3>
+                        <p>Utilized sine and cosine transformations for continuous cyclical temporal tracking of hours and minutes.</p>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">🎯</div>
+                        <h3>Target Encoding</h3>
+                        <p>Applied K-Fold target encoding to safely extract signals from high-cardinality categorical constraints.</p>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">🧠</div>
+                        <h3>Ensemble Modeling</h3>
+                        <p>Combined the power of LightGBM, XGBoost, and CatBoost in a robust multi-seed blending architecture.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="insights" class="container section-reveal">
+            <div class="glass-card highlight-card">
+                <h2>Key Insight: The "Day 49" Temporal Anomaly</h2>
+                <p>A deep analytical dive into the dataset distributions revealed a severe temporal shift:</p>
+                <ul class="insight-list">
+                    <li><strong>Training Data (Day 49):</strong> Contained only night-time records <em>(0:00 to 2:00)</em>.</li>
+                    <li><strong>Testing Data (Day 49):</strong> Contained only day-time records <em>(2:15 to 23:45)</em>.</li>
+                    <li><strong>The Shift:</strong> Baseline traffic demand at night on Day 49 was actually <strong>55% higher</strong> than Day 48.</li>
+                </ul>
+                <p>By identifying this anomaly, the model pipeline was iteratively adjusted (V1 through V6) utilizing log-transformations, sample-weighting, and selective day-dropping to prevent the tree-models from learning a skewed "night-time" bias for recent data.</p>
+            </div>
+        </section>
+
+        <section id="results" class="container section-reveal">
+            <div class="glass-card text-center">
+                <h2>Final Performance</h2>
+                <p>Scaled R-Squared Evaluation Metric</p>
+                <div class="score-display">
+                    <span class="score-value" id="final-score" data-target="89.29">0.00</span>
+                </div>
+                <p class="score-label">Top Leaderboard Score Achieved</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container text-center">
+            <p>Designed & Built for the Traffic Demand Challenge</p>
+            <a href="https://github.com/hiya7790/Traffic-Demand-Prediction" target="_blank" class="github-link">View Source Code</a>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

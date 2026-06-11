@@ -19,9 +19,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Load Model and Encoders
-MODEL_PATH = '/Users/hiya/Downloads/dataset/model.txt'
-ENCODERS_PATH = '/Users/hiya/Downloads/dataset/encoders.json'
+# Load Model and Encoders (Using relative paths for cloud deployment)
+MODEL_PATH = 'model.txt'
+ENCODERS_PATH = 'encoders.json'
 
 model = lgb.Booster(model_file=MODEL_PATH)
 with open(ENCODERS_PATH, 'r') as f:
@@ -74,8 +74,8 @@ def predict_traffic(request: PredictionRequest):
     }
 
 # Mount the docs directory to serve the frontend
-if os.path.exists('/Users/hiya/Downloads/dataset/docs'):
-    app.mount("/", StaticFiles(directory="/Users/hiya/Downloads/dataset/docs", html=True), name="static")
+if os.path.exists('docs'):
+    app.mount("/", StaticFiles(directory="docs", html=True), name="static")
 
 if __name__ == "__main__":
     uvicorn.run("app:app", host="0.0.0.0", port=8000, reload=True)

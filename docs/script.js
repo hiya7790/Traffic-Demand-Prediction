@@ -23,46 +23,58 @@ document.addEventListener('DOMContentLoaded', () => {
         revealOnScroll.observe(el);
     });
 
-    // 2. Dynamic Number Counter for the Score
-    const scoreElement = document.getElementById('final-score');
-    let counted = false;
+    // 2. Handle Form Submission for Live Predictions
+    const form = document.getElementById('prediction-form');
+    const resultDiv = document.getElementById('prediction-result');
+    const liveScore = document.getElementById('live-score');
 
-    const countUpOptions = {
-        threshold: 0.5
-    };
+    if (form) {
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Get form values
+            const payload = {
+                geohash: document.getElementById('geohash').value,
+                time: document.getElementById('time').value,
+                weather: document.getElementById('weather').value,
+                temperature: parseFloat(document.getElementById('temperature').value),
+                population: parseFloat(document.getElementById('population').value),
+                is_holiday: document.getElementById('is_holiday').checked ? 1 : 0
+            };
 
-    const countUpObserver = new IntersectionObserver(function(entries, observer) {
-        entries.forEach(entry => {
-            if (entry.isIntersecting && !counted) {
-                counted = true;
-                const target = parseFloat(scoreElement.getAttribute('data-target'));
-                const duration = 2000; // 2 seconds
-                const frameRate = 30;
-                const totalFrames = (duration / 1000) * frameRate;
-                let currentFrame = 0;
+            const submitBtn = form.querySelector('.submit-btn');
+            submitBtn.innerText = "Predicting...";
 
-                const counter = setInterval(() => {
-                    currentFrame++;
-                    const progress = currentFrame / totalFrames;
-                    
-                    // Ease out expo formula for smooth deceleration
-                    const easeOutProgress = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
-                    
-                    const currentScore = (target * easeOutProgress).toFixed(2);
-                    scoreElement.innerText = currentScore;
+            try {
+                // Fetch prediction from FastAPI backend
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
 
-                    if (currentFrame >= totalFrames) {
-                        clearInterval(counter);
-                        scoreElement.innerText = target.toFixed(2); // Ensure exact final value
-                    }
-                }, 1000 / frameRate);
+                if (!response.ok) throw new Error('Network response was not ok');
                 
-                observer.unobserve(entry.target);
+                const data = await response.json();
+                
+                // Display result
+                resultDiv.style.display = 'block';
+                liveScore.innerText = data.demand.toFixed(4);
+                
+                // Add a little pop animation
+                liveScore.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    liveScore.style.transform = 'scale(1)';
+                }, 200);
+
+            } catch (error) {
+                console.error("Error predicting:", error);
+                alert("Error connecting to the prediction server. Make sure FastAPI is running!");
+            } finally {
+                submitBtn.innerText = "Predict Traffic Demand";
             }
         });
-    }, countUpOptions);
-
-    if (scoreElement) {
-        countUpObserver.observe(scoreElement);
     }
 });

@@ -78,14 +78,55 @@
             </div>
         </section>
 
-        <section id="results" class="container section-reveal">
+        <section id="predict" class="container section-reveal">
             <div class="glass-card text-center">
-                <h2>Final Performance</h2>
-                <p>Scaled R-Squared Evaluation Metric</p>
-                <div class="score-display">
-                    <span class="score-value" id="final-score" data-target="89.29">0.00</span>
+                <h2>Live Traffic Predictor</h2>
+                <p>Input the conditions below to get a real-time traffic demand forecast powered by LightGBM.</p>
+                
+                <form id="prediction-form" class="predict-form">
+                    <div class="form-group">
+                        <label for="geohash">Location (Geohash):</label>
+                        <input type="text" id="geohash" name="geohash" value="qp03wc" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="time">Time of Day:</label>
+                        <input type="time" id="time" name="time" value="12:30" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="weather">Weather:</label>
+                        <select id="weather" name="weather">
+                            <option value="Clear">Clear</option>
+                            <option value="Cloudy">Cloudy</option>
+                            <option value="Rain">Rain</option>
+                            <option value="Snow">Snow</option>
+                            <option value="Fog">Fog</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="temperature">Temperature (°C):</label>
+                        <input type="number" id="temperature" name="temperature" value="22" step="0.1" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="population">Population Density (0 to 1):</label>
+                        <input type="range" id="population" name="population" min="0" max="1" step="0.01" value="0.5">
+                    </div>
+
+                    <div class="form-group checkbox-group">
+                        <input type="checkbox" id="is_holiday" name="is_holiday">
+                        <label for="is_holiday">Is it a Public Holiday?</label>
+                    </div>
+                    
+                    <button type="submit" class="btn primary-btn submit-btn">Predict Traffic Demand</button>
+                </form>
+
+                <div id="prediction-result" class="score-display" style="display: none;">
+                    <p class="score-label">Predicted Demand Score:</p>
+                    <span class="score-value" id="live-score">0.00</span>
                 </div>
-                <p class="score-label">Top Leaderboard Score Achieved</p>
             </div>
         </section>
     </main>
